@@ -15,6 +15,7 @@ module Fastlane
           bump_version_ios
         else
           bump_version_android
+        end
       end
 
       def self.description
@@ -55,9 +56,9 @@ module Fastlane
               new_version = bump(current_version, params[:type])
               set_info_plist_version(path, new_version)
           }
-          rescue => ex
-            UI.error(ex)
-          end
+        rescue => ex
+          UI.error(ex)
+        end
       end
 
       def get_info_plist_version(path)
@@ -78,7 +79,6 @@ module Fastlane
           plist['CFBundleShortVersionString'] = new_version
           new_plist = Plist::Emit.dump(plist)
           File.write(path, new_plist)
-          end
         rescue => ex
           UI.error(ex)
           UI.user_error!("Unable to set version '#{new_version}' to plist file at '#{path}'")
