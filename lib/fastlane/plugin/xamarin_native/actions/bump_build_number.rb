@@ -14,6 +14,7 @@ module Fastlane
           bump_build_number_ios
         else
           bump_build_number_android
+        end
       end
 
       def self.description
