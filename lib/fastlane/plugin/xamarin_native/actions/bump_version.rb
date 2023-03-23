@@ -48,14 +48,13 @@ module Fastlane
         return new_version = [major, minor, patch].join('.')
       end
 
-#region iOS
       def bump_version_ios
         begin
-          params[:info_plist_pathes].each { |path|
+          params[:info_plist_pathes].each do |path|
               current_version = get_info_plist_version(path)
               new_version = bump(current_version, params[:type])
               set_info_plist_version(path, new_version)
-          }
+          end
         rescue => ex
           UI.error(ex)
         end
@@ -84,9 +83,7 @@ module Fastlane
           UI.user_error!("Unable to set version '#{new_version}' to plist file at '#{path}'")
         end
       end
-#endregion
 
-#region Android
       def bump_version_droid
         begin
           doc = File.open(params[:manifest_file_path]) { |f|
@@ -101,7 +98,6 @@ module Fastlane
           UI.error(ex)
         end
       end
-#endregion
 
       def self.available_options
         [
@@ -144,6 +140,7 @@ module Fastlane
           [:ios, :android].include?(platform)
         true
       end
+
     end
   end
 end
