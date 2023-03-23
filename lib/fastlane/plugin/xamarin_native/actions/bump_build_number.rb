@@ -26,13 +26,16 @@ module Fastlane
       end
 
 
-#region iOS
       def bump_build_number_ios
-        params[:info_plist_pathes].each { |path|  
-          current_build_number = get_info_plist_build_number(path)
-          new_build_number = (current_build_number.to_i+1).to_s
-          set_info_plist_build_number(path, new_build_number)
-        }
+        begin
+          params[:info_plist_pathes].each do |path|  
+            current_build_number = get_info_plist_build_number(path)
+            new_build_number = (current_build_number.to_i+1).to_s
+            set_info_plist_build_number(path, new_build_number)
+          end
+        rescue => ex
+          UI.error(ex)
+        end
       end
 
       def get_info_plist_build_number(path)
@@ -59,9 +62,8 @@ module Fastlane
           UI.user_error!("Unable to set build number '#{new_build_number}' to plist file at '#{path}'")
         end
       end
-#endregion
 
-#region Android
+
       def bump_build_number_droid(type)
         doc = File.open(params[:manifest_file_path]) { |f|
           @doc = Nokogiri::XML(f)
@@ -72,7 +74,6 @@ module Fastlane
           File.write(manifest_file, @doc.to_xml)
         }
       end
-#endregion
 
       def self.available_options
         [
@@ -104,6 +105,7 @@ module Fastlane
           [:ios, :android].include?(platform)
         true
       end
+      
     end
   end
 end
