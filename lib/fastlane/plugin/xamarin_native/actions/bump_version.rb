@@ -76,7 +76,7 @@ module Fastlane
         end
       end
 
-      def self.bump_version_droid
+      def self.bump_version_android
         begin
           doc = File.open(params[:manifest_file_path]) { |f|
               @doc = Nokogiri::XML(f)
