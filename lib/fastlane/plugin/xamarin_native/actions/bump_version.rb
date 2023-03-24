@@ -58,7 +58,7 @@ module Fastlane
           info_plist = params[:info_plist_pathes]
           info_plist.each do |path|
               current_version = get_info_plist_version(path)
-              new_version = bump(current_version, version_type)
+              new_version = bump(current_version, params[:type])
               set_info_plist_version(path, new_version)
           end
         rescue => ex
