@@ -16,19 +16,19 @@ Plugin for Xamarin.Native iOS and Android projects
 
 ## Actions
 
-nuget
+### nuget
 
 restore NuGet packages for solution
 
-msbuild
+### msbuild
 
-build Xamarin.Native.iOS or Xamarin.Native.Android project or solution using MsBuild tool
+build Xamarin.Native.iOS or Xamarin.Native.Android project or solution using msbuild tool
 
-bump_version
+### bump_version
 
 increment project version (for iOS increment CFBundleShortVersionString in info plist, for Android - android:versionName in AndroidManifest.xml)
 
-bump_code
+### bump_code
 
 increment project build number (for iOS increment CFBundleVersion in info plist, for Android - android:versionCode in AndroidManifest.xml)
 
