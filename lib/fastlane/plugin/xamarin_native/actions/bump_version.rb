@@ -10,14 +10,6 @@ module Fastlane
       PLATFORM = %w(iOS Android).freeze
       VERSION_TYPE = %w(major minor patch).freeze
 
-      def self.run(params)
-        if params[:platform] == 'iOS'
-          bump_version_ios
-        else
-          bump_version_android
-        end
-      end
-
       def self.description
         "Increments project version"
       end
@@ -96,6 +88,14 @@ module Fastlane
           }
         rescue => ex
           UI.error(ex)
+        end
+      end
+
+      def self.run(params)
+        if params[:platform] == 'iOS'
+          bump_version_ios
+        else
+          bump_version_android
         end
       end
 
