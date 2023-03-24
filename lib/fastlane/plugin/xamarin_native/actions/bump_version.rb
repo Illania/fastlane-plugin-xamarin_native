@@ -27,25 +27,30 @@ module Fastlane
       end
 
       def self.bump(current_version,type)
-        components = current_version.split('.')
-        major = components[0].to_i
-        minor = components[1].to_i
-        patch = components[2].to_i
+        begin
+          components = current_version.split('.')
+          major = components[0].to_i
+          minor = components[1].to_i
+          patch = components[2].to_i
 
-        if type == "major"
-          major += 1
-          minor = 0
-          patch = 0
-        elsif type == "minor"
-          minor += 1
-          patch = 0
-        elsif type == "patch"
-          patch += 1
-        else
-          abort("Unknown version bump type: #{type}\nValid options: major, minor, patch.")
+          if type == "major"
+            major += 1
+            minor = 0
+            patch = 0
+          elsif type == "minor"
+            minor += 1
+            patch = 0
+          elsif type == "patch"
+            patch += 1
+          else
+            abort("Unknown version bump type: #{type}\nValid options: major, minor, patch.")
+          end
+
+          return new_version = [major, minor, patch].join('.')
+        rescue => ex
+          UI.error(ex)
         end
 
-        return new_version = [major, minor, patch].join('.')
       end
 
       def self.bump_version_ios(params)
@@ -134,7 +139,10 @@ module Fastlane
             env_name: 'FL_XN_BUILD_VERSION_MANIFEST_FILE_PATH',
             description: 'Android Manifest file path',
             type: String,
-            optional: false
+            optional: false,
+            verify_block: proc do |value|
+              UI.user_error!('File not found'.red) unless File.file? value
+            end
           )
         ]
       end
