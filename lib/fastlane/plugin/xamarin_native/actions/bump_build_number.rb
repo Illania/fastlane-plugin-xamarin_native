@@ -11,9 +11,9 @@ module Fastlane
 
       def self.run(params)
         if params[:platform] == 'iOS'
-          bump_build_number_ios
+          bump_build_number_ios(params)
         else
-          bump_build_number_android
+          bump_build_number_android(params)
         end
       end
 
@@ -26,7 +26,7 @@ module Fastlane
       end
 
 
-      def self.bump_build_number_ios
+      def self.bump_build_number_ios(params)
         begin
           params[:info_plist_pathes].each do |path|  
             current_build_number = get_info_plist_build_number(path)
@@ -64,7 +64,7 @@ module Fastlane
       end
 
 
-      def self.bump_build_number_droid(type)
+      def self.bump_build_number_droid(params)
         doc = File.open(params[:manifest_file_path]) { |f|
           @doc = Nokogiri::XML(f)
           manifest_node = @doc.xpath('//manifest')

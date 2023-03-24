@@ -10,6 +10,14 @@ module Fastlane
       PLATFORM = %w(iOS Android).freeze
       VERSION_TYPE = %w(major minor patch).freeze
 
+      def self.run(params)
+        if params[:platform] == 'iOS'
+          bump_version_ios(params)
+        else
+          bump_version_android(params)
+        end
+      end
+
       def self.description
         "Increments project version"
       end
@@ -34,17 +42,18 @@ module Fastlane
         elsif type == "patch"
           patch += 1
         else
-          abort("Unknown version bump type: #{params[:type]}\nValid options: major, minor, patch.")
+          abort("Unknown version bump type: #{type}\nValid options: major, minor, patch.")
         end
 
         return new_version = [major, minor, patch].join('.')
       end
 
-      def self.bump_version_ios
+      def self.bump_version_ios(params)
         begin
-          params[:info_plist_pathes].each do |path|
+          info_plist = params[:info_plist_pathes]
+          info_plist.each do |path|
               current_version = get_info_plist_version(path)
-              new_version = bump(current_version, params[:type])
+              new_version = bump(current_version, version_type)
               set_info_plist_version(path, new_version)
           end
         rescue => ex
@@ -76,26 +85,20 @@ module Fastlane
         end
       end
 
-      def self.bump_version_android
+      def self.bump_version_android(params)
         begin
-          doc = File.open(params[:manifest_file_path]) { |f|
+          version_type = params[:type]
+          manifest_file = params[:manifest_file_path]
+          doc = File.open() { |f| manifest_file
               @doc = Nokogiri::XML(f)
               manifest_node = @doc.xpath('//manifest')
               current_version = @doc.at('//manifest/@android:versionName').text
-              new_version = bump(current_version, params[:type])
+              new_version = bump(current_version, version_type)
               manifest_node.attr('android:versionName', new_version)
               File.write(manifest_file, @doc.to_xml)
           }
         rescue => ex
           UI.error(ex)
-        end
-      end
-
-      def self.run(params)
-        if params[:platform] == 'iOS'
-          bump_version_ios
-        else
-          bump_version_android
         end
       end
 
