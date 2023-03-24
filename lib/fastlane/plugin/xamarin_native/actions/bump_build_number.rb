@@ -26,7 +26,7 @@ module Fastlane
       end
 
 
-      def bump_build_number_ios
+      def self.bump_build_number_ios
         begin
           params[:info_plist_pathes].each do |path|  
             current_build_number = get_info_plist_build_number(path)
@@ -38,7 +38,7 @@ module Fastlane
         end
       end
 
-      def get_info_plist_build_number(path)
+      def self.get_info_plist_build_number(path)
         begin
           path = File.expand_path(path)
           plist = File.open(path) { |f| Plist.parse_xml(f) }
@@ -49,7 +49,7 @@ module Fastlane
         end
       end
 
-      def set_info_plist_build_number(path, new_build_number)
+      def self.set_info_plist_build_number(path, new_build_number)
         begin
           path = File.expand_path(path)
           plist = Plist.parse_xml(path)      
@@ -64,7 +64,7 @@ module Fastlane
       end
 
 
-      def bump_build_number_droid(type)
+      def self.bump_build_number_droid(type)
         doc = File.open(params[:manifest_file_path]) { |f|
           @doc = Nokogiri::XML(f)
           manifest_node = @doc.xpath('//manifest')
@@ -105,7 +105,7 @@ module Fastlane
           [:ios, :android].include?(platform)
         true
       end
-      
+
     end
   end
 end

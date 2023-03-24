@@ -18,7 +18,7 @@ module Fastlane
         ["illania"]
       end
 
-      def bump(current_version,type)
+      def self.bump(current_version,type)
         components = current_version.split('.')
         major = components[0].to_i
         minor = components[1].to_i
@@ -40,7 +40,7 @@ module Fastlane
         return new_version = [major, minor, patch].join('.')
       end
 
-      def bump_version_ios
+      def self.bump_version_ios
         begin
           params[:info_plist_pathes].each do |path|
               current_version = get_info_plist_version(path)
@@ -52,7 +52,7 @@ module Fastlane
         end
       end
 
-      def get_info_plist_version(path)
+      def self.get_info_plist_version(path)
         begin
           path = File.expand_path(path)
           plist = File.open(path) { |f| Plist.parse_xml(f) }
@@ -63,7 +63,7 @@ module Fastlane
         end
       end
 
-      def set_info_plist_version(path, new_version)
+      def self.set_info_plist_version(path, new_version)
         begin
           path = File.expand_path(path)
           plist = Plist.parse_xml(path)      
@@ -76,7 +76,7 @@ module Fastlane
         end
       end
 
-      def bump_version_droid
+      def self.bump_version_droid
         begin
           doc = File.open(params[:manifest_file_path]) { |f|
               @doc = Nokogiri::XML(f)

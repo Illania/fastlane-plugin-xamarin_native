@@ -11,10 +11,10 @@ module Fastlane
        PRINT_ALL = [true, false].freeze
 
       def self.run(params)
-        msbuild_build(params)
+        build(params)
       end
 
-      def self.msbuild_build(params)
+      def self.build(params)
         platform = params[:platform]
         build_type = params[:build_type]
         target = params[:target]
