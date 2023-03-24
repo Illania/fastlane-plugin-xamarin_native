@@ -46,7 +46,7 @@ module Fastlane
         
         command << project if project != nil
         command << solution if solution != nil
-        Helper::XamarinBuildHelper.bash(command, !params[:print_all])
+        Helper::XamarinNativeHelper.bash(command, !params[:print_all])
       end
 
       def self.description
