@@ -38,11 +38,11 @@ module Fastlane
         command << "/p:IpaPackageName=#{ipa_name} " if ipa_name != nil
         command << "/p:IpaPackageDir=#{output_path} " if output_path != nil
         
-        command << "/t:SignAndroidPackage " if sign_apk != nil
-        command << "/p:AndroidSigningKeyStore=#{android_signing_keystore} " if sign_apk != nil
-        command << "/p:AndroidSigningKeyPass=#{android_signing_key_pass} " if sign_apk != nil
-        command << "/p:AndroidSigningStorePass=#{android_signing_store_pass} " if sign_apk != nil
-        command << "/p:AndroidSigningKeyAlias=#{android_signing_key_alias} " if sign_apk != nil
+        command << "/t:SignAndroidPackage " if sign_apk == true
+        command << "/p:AndroidSigningKeyStore=#{android_signing_keystore} " if  android_signing_keystore != nil
+        command << "/p:AndroidSigningKeyPass=#{android_signing_key_pass} " if android_signing_key_pass != nil
+        command << "/p:AndroidSigningStorePass=#{android_signing_store_pass} " if  android_signing_store_pass != nil
+        command << "/p:AndroidSigningKeyAlias=#{android_signing_key_alias} " if  android_signing_key_alias != nil
         
         command << project if project != nil
         command << solution if solution != nil
