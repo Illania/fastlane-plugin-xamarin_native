@@ -94,7 +94,7 @@ module Fastlane
         begin
           version_type = params[:type]
           manifest_file = params[:manifest_file_path]
-          doc = File.open() { |f| manifest_file
+          doc = File.open(manifest_file) { |f| 
               @doc = Nokogiri::XML(f)
               manifest_node = @doc.xpath('//manifest')
               current_version = @doc.at('//manifest/@android:versionName').text
