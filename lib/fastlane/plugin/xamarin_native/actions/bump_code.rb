@@ -71,7 +71,7 @@ module Fastlane
             current_build_number = @doc.at('//manifest/@android:versionCode').text
             new_build_number = (current_build_number.to_i+1).to_s
             manifest_node.attr('android:versionCode', new_build_number)
-            File.write(manifest_file, @doc.to_xml)
+            File.write(params[:manifest_file_path], @doc.to_xml)
           }
         rescue => ex
           UI.error(ex)
