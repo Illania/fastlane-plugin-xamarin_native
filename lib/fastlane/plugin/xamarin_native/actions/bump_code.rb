@@ -56,7 +56,6 @@ module Fastlane
           plist['CFBundleVersion'] = new_build_number
           new_plist = Plist::Emit.dump(plist)
           File.write(path, new_plist)
-          end
         rescue => ex
           UI.error(ex)
           UI.user_error!("Unable to set build number '#{new_build_number}' to plist file at '#{path}'")
@@ -65,14 +64,18 @@ module Fastlane
 
 
       def self.bump_build_number_android(params)
-        doc = File.open(params[:manifest_file_path]) { |f|
-          @doc = Nokogiri::XML(f)
-          manifest_node = @doc.xpath('//manifest')
-          current_build_number = @doc.at('//manifest/@android:versionCode').text
-          new_build_number = (current_build_number.to_i+1).to_s
-          manifest_node.attr('android:versionCode', new_build_number)
-          File.write(manifest_file, @doc.to_xml)
-        }
+        begin
+          doc = File.open(params[:manifest_file_path]) { |f|
+            @doc = Nokogiri::XML(f)
+            manifest_node = @doc.xpath('//manifest')
+            current_build_number = @doc.at('//manifest/@android:versionCode').text
+            new_build_number = (current_build_number.to_i+1).to_s
+            manifest_node.attr('android:versionCode', new_build_number)
+            File.write(manifest_file, @doc.to_xml)
+          }
+        rescue => ex
+          UI.error(ex)
+        end
       end
 
       def self.available_options
