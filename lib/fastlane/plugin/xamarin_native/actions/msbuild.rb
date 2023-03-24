@@ -7,7 +7,7 @@ module Fastlane
        MSBUILD = '/Library/Frameworks/Mono.framework/Commands/msbuild'.freeze
        BUILD_TYPE = %w(Release Debug).freeze
        PLATFORM = %w(iPhone iPhoneSimulator AnyCPU).freeze
-       TARGET = %w(Build, Rebuild, Clean).freeze
+       TARGET = %w(Build Rebuild Clean).freeze
        PRINT_ALL = [true, false].freeze
 
       def self.run(params)
