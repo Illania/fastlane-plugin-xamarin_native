@@ -5,7 +5,7 @@ require_relative '../helper/xamarin_native_helper'
 
 module Fastlane
   module Actions
-    class BumpBuildNumberAction < Action
+    class BumpCodeAction < Action
 
       PLATFORM = %w(iOS Android).freeze
 
@@ -64,7 +64,7 @@ module Fastlane
       end
 
 
-      def self.bump_build_number_droid(params)
+      def self.bump_build_number_android(params)
         doc = File.open(params[:manifest_file_path]) { |f|
           @doc = Nokogiri::XML(f)
           manifest_node = @doc.xpath('//manifest')
