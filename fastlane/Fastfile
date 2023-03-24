@@ -1,3 +1,97 @@
-lane :test do
-  xamarin_native
+fastlane_version '1.96.0'
+
+default_platform :ios
+
+platform :ios do
+  
+  desc "restore nuget"
+  lane :restore do 
+    begin
+      nuget(
+        sln: './Mark5.sln',
+        verbosity: 'detailed'     
+      )      
+    rescue => exception
+      UI.error(exception)
+    end
+  end
+  
+  desc "bump ios version and build number"
+  lane :bump_ios do 
+    begin
+      bump_version(
+        platform: 'iOS',
+        type: 'patch',
+        info_plist_pathes: [
+           './Mark5.Mobile.IOS/Info.plist',
+           './Mark5.Mobile.IOS.Extensions.CallId/Info.plist', 
+           './reMARK.Mobile.IOS.Extensions.Share/Info.plist'
+        ] 
+      )
+      bump_code(
+        platform: 'iOS',
+        info_plist_pathes: [
+           './Mark5.Mobile.IOS/Info.plist',
+           './Mark5.Mobile.IOS.Extensions.CallId/Info.plist', 
+           './reMARK.Mobile.IOS.Extensions.Share/Info.plist'
+        ] 
+      )      
+    rescue => exception
+       UI.error(exception)
+    end
+  end
+
+  desc "msbuild ios"
+  lane :msbuild_ios do
+    begin
+      msbuild(
+        solution: './Mark5.sln',
+        platform: 'iPhone',
+        target: 'Clean',
+        build_type: 'Release',
+        ipa_name: 'remark.ipa'
+      ) 
+    rescue => exception
+      UI.error(exception)
+    end
+  end
+  
+end
+
+platform :android do
+  
+  desc "bump android version"
+  lane :bump_android do 
+    begin
+      bump_version(
+        platform: 'Android',
+        type: 'patch',
+        manifest_file_path: './Mark5.Mobile.Droid/Properties/AndroidManifest.xml'
+      )
+      bump_code(
+        platform: 'Android',
+        manifest_file_path: './Mark5.Mobile.Droid/Properties/AndroidManifest.xml'
+      )       
+    rescue => exception
+       UI.error(exception)
+    end
+  end
+
+  desc "msbuild android"
+  lane :msbuild_android do
+    begin
+       msbuild(
+        project: './Mark5.Mobile.Droid/Mark5.Mobile.Droid.csproj',
+        target: 'Build',
+        build_type: 'Release',
+        sign_apk: true,
+        android_signing_keystore: '/Users/anna/extra/Certificates/Android/default.keystore',
+        android_signing_key_alias: 'default',
+        android_signing_key_pass: 'Xs4Droid2015!',
+        android_signing_store_pass: 'Xs4Droid2015!'
+    )   
+    rescue => exception
+      UI.error(exception)
+    end
+  end  
 end
